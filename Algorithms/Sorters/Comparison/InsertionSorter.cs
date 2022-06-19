@@ -5,6 +5,9 @@ namespace Algorithms.Sorters.Comparison
     /// <summary>
     ///     Class that implements insertion sort algorithm.
     /// </summary>
+    /// <remarks>
+    /// More info on https://en.wikipedia.org/wiki/Insertion_sort.
+    /// </remarks>
     /// <typeparam name="T">Type of array element.</typeparam>
     public class InsertionSorter<T> : IComparisonSorter<T>
     {
@@ -19,20 +22,20 @@ namespace Algorithms.Sorters.Comparison
         /// <param name="comparer">Compares elements.</param>
         public void Sort(T[] array, IComparer<T> comparer)
         {
-            for (var i = 0; i < array.Length - 1; i++)
+            for (int i = 1; i < array.Length; ++i)
             {
-                var imin = i;
-                for (var j = i + 1; j < array.Length; j++)
+                T key = array[i];
+                int j = i - 1;
+
+                // Swap the key with the previous element on the array if
+                // the order is wrong.
+                while (j >= 0 && comparer.Compare(array[j], key) > 0)
                 {
-                    if (comparer.Compare(array[j], array[imin]) < 0)
-                    {
-                        imin = j;
-                    }
+                    array[j + 1] = array[j];
+                    j = j - 1;
                 }
 
-                var t = array[imin];
-                array[imin] = array[i];
-                array[i] = t;
+                array[j + 1] = key;
             }
         }
     }
